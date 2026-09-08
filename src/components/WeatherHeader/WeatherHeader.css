@@ -1,0 +1,9 @@
+.header {
+  color: var(--text-main);
+  background: var(--bg-header);
+  padding-block: 1.5rem;
+}
+
+.header__container {
+  display: flex;
+}
