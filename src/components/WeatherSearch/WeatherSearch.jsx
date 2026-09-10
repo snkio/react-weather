@@ -1,9 +1,26 @@
 import "./WeatherSearch.css";
 
-function WeatherSearch({ getWeather, input, setInput }) {
-  function handleSearch(e) {
+function WeatherSearch({
+  getWeather,
+  input,
+  setCity,
+  setInput,
+  setLoading,
+  setWeather,
+}) {
+  async function handleSearch(e) {
     e.preventDefault();
-    getWeather(input);
+    setLoading(true);
+
+    const data = await getWeather(input);
+
+    if (data) {
+      setWeather(data.temp);
+      setCity(data.cityName);
+      localStorage.setItem("city", data.cityName);
+    }
+
+    setLoading(false);
   }
 
   return (

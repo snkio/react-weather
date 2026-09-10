@@ -4,6 +4,7 @@ import WeatherHeader from "./components/WeatherHeader/WeatherHeader";
 import WeatherInfo from "./components/WeatherInfo/WeatherInfo";
 
 function App() {
+  const [loading, setLoading] = useState(false);
   const [city, setCity] = useState(() => {
     return localStorage.getItem("city") || "New York";
   });
@@ -22,13 +23,7 @@ function App() {
       const result = data.results[0];
 
       if (!result) return;
-
       const fullCity = result?.name;
-      console.log(fullCity);
-
-      setCity(fullCity);
-      setInput(fullCity);
-      localStorage.setItem("city", fullCity);
 
       const { latitude, longitude } = result;
 
@@ -42,27 +37,41 @@ function App() {
       const getTemp = weatherResult?.temperature_2m;
       const roundedTemp = Math.round(getTemp);
 
-      setWeather(roundedTemp);
-      localStorage.setItem("city", fullCity);
+      return {
+        temp: roundedTemp,
+        cityName: fullCity,
+      };
     } catch (err) {
       console.error(err);
+      return null;
     }
   }
 
   useEffect(() => {
-    getWeather(city);
+    async function getData() {
+      setLoading(true);
+      const startCity = localStorage.getItem("city") || "New York";
+      const result = await getWeather(startCity);
+      setWeather(result.temp);
+      setLoading(false);
+    }
+
+    getData();
   }, []);
 
   return (
     <>
       <WeatherHeader
+        city={city}
+        setLoading={setLoading}
         input={input}
         setInput={setInput}
-        weather={weather}
+        setWeather={setWeather}
         setCity={setCity}
+        weather={weather}
         getWeather={getWeather}
       />
-      <WeatherInfo city={city} weather={weather} />
+      <WeatherInfo loading={loading} city={city} weather={weather} />
     </>
   );
 }

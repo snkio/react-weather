@@ -1,10 +1,14 @@
-function WeatherInfo({ city, weather }) {
+function WeatherInfo({ city, weather, loading }) {
   return (
     <>
-      <div className="container">
-        {city && <h1>{city}</h1>}
-        {city && <p>{weather}</p>}
-      </div>
+      {loading === true ? (
+        "Загрузка..."
+      ) : (
+        <div className="container">
+          {city && <h1>{city}</h1>}
+          {city && <p>{weather}</p>}
+        </div>
+      )}
     </>
   );
 }
