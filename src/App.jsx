@@ -1,6 +1,5 @@
-import "./App.css";
 import { useState, useEffect } from "react";
-import WeatherHeader from "./components/WeatherHeader/WeatherHeader";
+import WeatherSearch from "./components/WeatherSearch/WeatherSearch";
 import WeatherInfo from "./components/WeatherInfo/WeatherInfo";
 
 function App() {
@@ -28,11 +27,13 @@ function App() {
       const { latitude, longitude } = result;
 
       const getWeatherResponse = await fetch(
-        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m`,
+        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code`,
       );
 
       const weatherData = await getWeatherResponse.json();
       const weatherResult = weatherData.current;
+
+      console.log(weatherData);
 
       const getTemp = weatherResult?.temperature_2m;
       const roundedTemp = Math.round(getTemp);
@@ -52,7 +53,7 @@ function App() {
       setLoading(true);
       const startCity = localStorage.getItem("city") || "New York";
       const result = await getWeather(startCity);
-      setWeather(result.temp);
+      setWeather(result);
       setLoading(false);
     }
 
@@ -61,17 +62,19 @@ function App() {
 
   return (
     <>
-      <WeatherHeader
-        city={city}
+      <WeatherSearch
         setLoading={setLoading}
         input={input}
         setInput={setInput}
         setWeather={setWeather}
         setCity={setCity}
-        weather={weather}
         getWeather={getWeather}
       />
-      <WeatherInfo loading={loading} city={city} weather={weather} />
+      {loading === true ? (
+        <span>Loading...</span>
+      ) : (
+        <WeatherInfo city={city} weather={weather} />
+      )}
     </>
   );
 }
