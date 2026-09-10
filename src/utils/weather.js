@@ -1,9 +1,42 @@
+const weatherCodes = {
+  0: {
+    text: "Clear",
+    icon: "none",
+  },
+  1: {
+    text: "Mainly Clear",
+    icon: "none",
+  },
+  2: {
+    text: "Partly Cloudy",
+    icon: "none",
+  },
+  3: {
+    text: "Overcast",
+    icon: "none",
+  },
+  45: {
+    text: "Fog",
+    icon: "none",
+  },
+  48: {
+    text: "Fog",
+    icon: "none",
+  },
+  51: {
+    text: "Light Drizzle",
+    icon: "none",
+  }, // TODO: Add remaining weather codes
+};
+
+console.log(weatherCodes[10]);
+
 export async function searchCities(cityName) {
   if (!cityName) return;
 
   try {
     const response = await fetch(
-      `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}&count=20&language=en&format=json`,
+      `https://geocoding-api.open-meteo.com/v1/search?name=${cityName}&count=10&language=en&format=json`,
     );
     const data = await response.json();
     const result = data.results;
@@ -22,7 +55,6 @@ export async function getWeather(cityName) {
     const citiesArray = await searchCities(cityName);
 
     if (!citiesArray) return;
-    console.log(citiesArray);
 
     const firstCity = citiesArray[0];
 
@@ -37,10 +69,17 @@ export async function getWeather(cityName) {
     const weatherData = await getWeatherResponse.json();
     const weatherResult = weatherData.current;
 
+    const rawWeatherCode = weatherResult?.weather_code;
+    const weatherCondition = weatherResult[rawWeatherCode] || {
+      text: "Unknown",
+      icon: "unknown",
+    };
+
     const getTemp = weatherResult?.temperature_2m;
     const roundedTemp = Math.round(getTemp);
 
     return {
+      type: weatherCondition,
       temp: roundedTemp,
       cityName: fullCity,
     };

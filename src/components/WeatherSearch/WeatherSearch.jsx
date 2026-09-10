@@ -16,6 +16,7 @@ function WeatherSearch({
 
     await handleSearch(input);
     setInput("");
+    setSuggestions([]);
   }
 
   async function handleSearchClick(i) {
