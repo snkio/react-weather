@@ -26,7 +26,91 @@ const weatherCodes = {
   51: {
     text: "Light Drizzle",
     icon: "none",
-  }, // TODO: Add remaining weather codes
+  },
+  53: {
+    text: "Drizzle",
+    icon: "none",
+  },
+  55: {
+    text: "Drizzle",
+    icon: "none",
+  },
+  56: {
+    text: "Drizzle",
+    icon: "none",
+  },
+  57: {
+    text: "Heavy freezing Rain",
+    icon: "none",
+  },
+  61: {
+    text: "Light Rain",
+    icon: "none",
+  },
+  63: {
+    text: "Rain",
+    icon: "none",
+  },
+  65: {
+    text: "Heavy Rain",
+    icon: "none",
+  },
+  66: {
+    text: "Freezing Rain",
+    icon: "none",
+  },
+  67: {
+    text: "Freezing Rain",
+    icon: "none",
+  },
+  71: {
+    text: "Light Snow",
+    icon: "none",
+  },
+  73: {
+    text: "Snow",
+    icon: "none",
+  },
+  75: {
+    text: "Heavy Snow",
+    icon: "none",
+  },
+  77: {
+    text: "Snow Grains",
+    icon: "none",
+  },
+  80: {
+    text: "Light Showers",
+    icon: "none",
+  },
+  81: {
+    text: "Showers",
+    icon: "none",
+  },
+  82: {
+    text: "Heavy Downpour",
+    icon: "none",
+  },
+  85: {
+    text: "Light Snow Showers",
+    icon: "none",
+  },
+  86: {
+    text: "Snow Showers",
+    icon: "none",
+  },
+  95: {
+    text: "Thunderstorm",
+    icon: "none",
+  },
+  96: {
+    text: "Hail Storm",
+    icon: "none",
+  },
+  99: {
+    text: "Heavy Hail Storm",
+    icon: "none",
+  },
 };
 
 console.log(weatherCodes[10]);
@@ -70,7 +154,7 @@ export async function getWeather(cityName) {
     const weatherResult = weatherData.current;
 
     const rawWeatherCode = weatherResult?.weather_code;
-    const weatherCondition = weatherResult[rawWeatherCode] || {
+    const weatherCondition = weatherCodes[rawWeatherCode] || {
       text: "Unknown",
       icon: "unknown",
     };
