@@ -31,7 +31,10 @@ function WeatherSearch({
 
     const data = await getWeather(cityName);
 
-    if (!data) return;
+    if (!data) {
+      setLoading(false);
+      return;
+    }
 
     setWeather(data);
     setCity(data.cityName);

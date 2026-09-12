@@ -141,31 +141,53 @@ export async function getWeather(cityName) {
     if (!citiesArray) return;
 
     const firstCity = citiesArray[0];
-
     const fullCity = firstCity?.name;
 
     const { latitude, longitude } = firstCity;
 
     const getWeatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code`,
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature&timezone=auto`,
     );
 
     const weatherData = await getWeatherResponse.json();
-    const weatherResult = weatherData.current;
 
-    const rawWeatherCode = weatherResult?.weather_code;
+    const weatherNow = weatherData.current;
+    const weatherHour = weatherData.hourly;
+    const weatherDaily = weatherData.daily;
+
+    console.log(weatherData);
+
+    const rawWeatherCode = weatherNow?.weather_code;
     const weatherCondition = weatherCodes[rawWeatherCode] || {
       text: "Unknown",
       icon: "unknown",
     };
+    const tempNow = weatherNow?.temperature_2m;
+    const feelingsNow = weatherNow?.apparent_temperature;
+    const humidityNow = weatherNow?.relative_humidity_2m;
+    const windSpeedNow = weatherNow?.wind_speed_10m;
 
-    const getTemp = weatherResult?.temperature_2m;
-    const roundedTemp = Math.round(getTemp);
+    const sunrise = weatherDaily?.sunrise;
+    const sunset = weatherDaily?.sunset;
+    const tempDailyMax = weatherDaily?.temperature_2m_max;
+    const tempDailyMin = weatherDaily?.temperature_2m_min;
 
     return {
-      type: weatherCondition,
-      temp: roundedTemp,
-      cityName: fullCity,
+      now: {
+        cityName: fullCity,
+        type: weatherCondition,
+        temperature: Math.round(tempNow),
+        realfeal: Math.round(feelingsNow),
+        humadity: humidityNow,
+        windSpeed: windSpeedNow,
+      },
+      hour: {},
+      daily: {
+        sunrise: sunrise,
+        sunset: sunset,
+        temperatureMax: tempDailyMax,
+        temperatureMin: tempDailyMin,
+      },
     };
   } catch (err) {
     console.error(err);
