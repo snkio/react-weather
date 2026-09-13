@@ -37,8 +37,8 @@ function WeatherSearch({
     }
 
     setWeather(data);
-    setCity(data.cityName);
-    localStorage.setItem("city", data.cityName);
+    setCity(data?.now?.cityName);
+    localStorage.setItem("city", data?.now?.cityName);
 
     setLoading(false);
   }

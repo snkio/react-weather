@@ -10,9 +10,7 @@ function App() {
     return localStorage.getItem("city") || "New York";
   });
   const [input, setInput] = useState("");
-
   const [weather, setWeather] = useState(null);
-
   const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {

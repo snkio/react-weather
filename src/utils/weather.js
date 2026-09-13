@@ -113,8 +113,6 @@ const weatherCodes = {
   },
 };
 
-console.log(weatherCodes[10]);
-
 export async function searchCities(cityName) {
   if (!cityName) return;
 
@@ -148,6 +146,31 @@ export async function getWeather(cityName) {
     const getWeatherResponse = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature&timezone=auto`,
     );
+
+    function toDate(e) {
+      let getDate;
+      const iso = e;
+
+      if (iso) {
+        getDate = new Date(iso);
+      } else {
+        getDate = new Date();
+      }
+
+      const dateText = getDate.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      const timeText = getDate.toLocaleTimeString(undefined, {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      return {
+        text: dateText,
+        hour: timeText,
+      };
+    }
 
     const weatherData = await getWeatherResponse.json();
 
@@ -183,10 +206,10 @@ export async function getWeather(cityName) {
       },
       hour: {},
       daily: {
-        sunrise: sunrise,
+        sunrise: toDate(sunrise[0]),
         sunset: sunset,
-        temperatureMax: tempDailyMax,
-        temperatureMin: tempDailyMin,
+        temperatureMax: Math.round(tempDailyMax[0]),
+        temperatureMin: Math.round(tempDailyMin[0]),
       },
     };
   } catch (err) {
