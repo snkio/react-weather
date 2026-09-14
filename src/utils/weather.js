@@ -113,6 +113,31 @@ const weatherCodes = {
   },
 };
 
+export function toDate(e) {
+  let getDate;
+  const iso = e;
+
+  if (iso) {
+    getDate = new Date(iso);
+  } else {
+    getDate = new Date();
+  }
+
+  const dateText = getDate.toLocaleDateString(undefined, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+  const timeText = getDate.toLocaleTimeString(undefined, {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  return {
+    text: dateText,
+    hour: timeText,
+  };
+}
+
 export async function searchCities(cityName) {
   if (!cityName) return;
 
@@ -147,29 +172,14 @@ export async function getWeather(cityName) {
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature&timezone=auto`,
     );
 
-    function toDate(e) {
-      let getDate;
-      const iso = e;
-
-      if (iso) {
-        getDate = new Date(iso);
-      } else {
-        getDate = new Date();
-      }
-
-      const dateText = getDate.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
-      const timeText = getDate.toLocaleTimeString(undefined, {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      return {
-        text: dateText,
-        hour: timeText,
+    function toWeather(weather) {
+      const rawWeatherCode = weather?.weather_code;
+      const weatherCondition = weatherCodes[rawWeatherCode] || {
+        text: "Unknown",
+        icon: "unknown",
       };
+
+      return weatherCondition;
     }
 
     const weatherData = await getWeatherResponse.json();
@@ -180,15 +190,18 @@ export async function getWeather(cityName) {
 
     console.log(weatherData);
 
-    const rawWeatherCode = weatherNow?.weather_code;
-    const weatherCondition = weatherCodes[rawWeatherCode] || {
-      text: "Unknown",
-      icon: "unknown",
-    };
     const tempNow = weatherNow?.temperature_2m;
     const feelingsNow = weatherNow?.apparent_temperature;
     const humidityNow = weatherNow?.relative_humidity_2m;
     const windSpeedNow = weatherNow?.wind_speed_10m;
+
+    const timeHour = weatherHour.time.map((e) => toDate(e));
+    const tempHour = weatherHour.temperature_2m;
+    const typeHour = weatherHour?.weather_code?.map((wcode) => {
+      return toWeather({ weather_code: wcode });
+    });
+
+    console.log(weatherHour);
 
     const sunrise = weatherDaily?.sunrise;
     const sunset = weatherDaily?.sunset;
@@ -198,16 +211,20 @@ export async function getWeather(cityName) {
     return {
       now: {
         cityName: fullCity,
-        type: weatherCondition,
+        type: toWeather(weatherNow),
         temperature: Math.round(tempNow),
         realfeal: Math.round(feelingsNow),
         humadity: humidityNow,
         windSpeed: windSpeedNow,
       },
-      hour: {},
+      hour: {
+        type: typeHour,
+        time: timeHour,
+        temperature: tempHour.map((e) => Math.round(e)),
+      },
       daily: {
         sunrise: toDate(sunrise[0]),
-        sunset: sunset,
+        sunset: toDate(sunset[0]),
         temperatureMax: Math.round(tempDailyMax[0]),
         temperatureMin: Math.round(tempDailyMin[0]),
       },

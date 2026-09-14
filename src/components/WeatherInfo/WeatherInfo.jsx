@@ -1,4 +1,5 @@
 function WeatherInfo({ city, weather }) {
+  console.log(weather);
   return (
     <>
       <div className="w-full flex px-4 py-4 flex-col justify-center md:max-w-7xl md:mx-auto">
@@ -7,17 +8,18 @@ function WeatherInfo({ city, weather }) {
         {city && (
           <div className="flex items-center gap-2">
             <p>{weather?.now?.type?.text}</p>
-            <span className="text-red-700">
+            <span className="text-red-800">
               {weather?.daily?.temperatureMax}&deg;
             </span>
             <span className="opacity-50">/</span>
-            <span className="text-blue-700">
+            <span className="text-blue-800">
               {weather?.daily?.temperatureMin}&deg;
             </span>
           </div>
         )}
 
-        {/* {city && <p>{weather?.daily?.sunrise?.hour}</p>} */}
+        {city && <p>Sunrise {weather?.daily?.sunrise?.hour}</p>}
+        {city && <p>Sunset {weather?.daily?.sunset?.hour}</p>}
       </div>
     </>
   );
