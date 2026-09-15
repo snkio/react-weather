@@ -195,13 +195,29 @@ export async function getWeather(cityName) {
     const humidityNow = weatherNow?.relative_humidity_2m;
     const windSpeedNow = weatherNow?.wind_speed_10m;
 
-    const timeHour = weatherHour.time.map((e) => toDate(e));
-    const tempHour = weatherHour.temperature_2m;
-    const typeHour = weatherHour?.weather_code?.map((wcode) => {
-      return toWeather({ weather_code: wcode });
-    });
+    const getCurrentHour = new Date().getHours();
 
-    console.log(weatherHour);
+    const timeHour = weatherHour.time
+      .filter((e) => {
+        const now = new Date();
+        const getWeatherTime = new Date(e);
+
+        now.setMinutes(0, 0, 0);
+
+        return getWeatherTime.getTime() >= now.getTime();
+      })
+      .slice(0, 24)
+      .map((e) => toDate(e));
+    const tempHour = weatherHour.temperature_2m.slice(
+      getCurrentHour,
+      getCurrentHour + 24,
+    );
+    const typeHour =
+      weatherHour?.weather_code
+        ?.slice(getCurrentHour, getCurrentHour + 24)
+        ?.map((wcode) => {
+          return toWeather({ weather_code: wcode });
+        }) || [];
 
     const sunrise = weatherDaily?.sunrise;
     const sunset = weatherDaily?.sunset;
