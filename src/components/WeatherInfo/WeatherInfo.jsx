@@ -20,6 +20,10 @@ function WeatherInfo({ city, weather }) {
 
         {city && <p>Sunrise {weather?.daily?.sunrise?.hour}</p>}
         {city && <p>Sunset {weather?.daily?.sunset?.hour}</p>}
+        {city && <p>Real Feel {weather?.now?.realfeel}</p>}
+        {city && <p>Humadity {weather?.now?.humadity}</p>}
+        {city && <p>Wind Speed {weather?.now?.windSpeed}</p>}
+        {city && <p>Wind Direction {weather?.now?.windDirection}&deg;</p>}
       </div>
     </>
   );

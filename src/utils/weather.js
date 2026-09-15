@@ -194,6 +194,7 @@ export async function getWeather(cityName) {
     const feelingsNow = weatherNow?.apparent_temperature;
     const humidityNow = weatherNow?.relative_humidity_2m;
     const windSpeedNow = weatherNow?.wind_speed_10m;
+    const windDirectionNow = weatherNow?.wind_direction_10m;
 
     const getCurrentHour = new Date().getHours();
 
@@ -229,9 +230,10 @@ export async function getWeather(cityName) {
         cityName: fullCity,
         type: toWeather(weatherNow),
         temperature: Math.round(tempNow),
-        realfeal: Math.round(feelingsNow),
+        realfeel: Math.round(feelingsNow),
         humadity: humidityNow,
         windSpeed: windSpeedNow,
+        windDirection: windDirectionNow,
       },
       hour: {
         type: typeHour,
