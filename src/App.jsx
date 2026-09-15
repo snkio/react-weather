@@ -1,75 +1,48 @@
-import "./App.css";
+import { searchCities } from "./utils/weather";
+import { getWeather } from "./utils/weather";
 import { useState, useEffect } from "react";
-import WeatherHeader from "./components/WeatherHeader/WeatherHeader";
+import WeatherSearch from "./components/WeatherSearch/WeatherSearch";
 import WeatherInfo from "./components/WeatherInfo/WeatherInfo";
 
 function App() {
+  const [loading, setLoading] = useState(false);
   const [city, setCity] = useState(() => {
-    const saved = localStorage.getItem("city");
-
-    if (saved === null) {
-      localStorage.setItem("city", "New York");
-      return "New York";
-    }
-
-    if (saved) {
-      return saved;
-    }
+    return localStorage.getItem("city") || "New York";
   });
-
+  const [input, setInput] = useState("");
   const [weather, setWeather] = useState(null);
-
-  async function getWeather(city) {
-    if (!city) return;
-
-    try {
-      const response = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=20&language=en&format=json`,
-      );
-      const getData = await response.json();
-      const results = getData.results[0];
-
-      if (results) {
-        const fullCity = results?.name;
-
-        setCity(fullCity);
-
-        localStorage.setItem("city", fullCity);
-
-        const lat = results?.latitude;
-        const lon = results?.longitude;
-
-        const getWeatherResponse = await fetch(
-          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m`,
-        );
-
-        const getDataWeather = await getWeatherResponse.json();
-        const getResults = getDataWeather.current;
-
-        const getTemp = getResults?.temperature_2m;
-        console.log(Math.round(getTemp));
-        setWeather(getTemp);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
+  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
-    const startCity = localStorage.getItem("city") || "New York";
+    async function getData() {
+      setLoading(true);
+      const startCity = localStorage.getItem("city") || "New York";
+      const result = await getWeather(startCity);
+      setWeather(result);
+      setLoading(false);
+    }
 
-    getWeather(startCity);
+    getData();
   }, []);
 
   return (
     <>
-      <WeatherHeader
-        city={city}
-        weather={weather}
+      <WeatherSearch
+        setLoading={setLoading}
+        input={input}
+        setInput={setInput}
+        setWeather={setWeather}
         setCity={setCity}
+        setSuggestions={setSuggestions}
         getWeather={getWeather}
+        searchCities={searchCities}
+        suggestions={suggestions}
       />
-      <WeatherInfo city={city} weather={weather} />
+      {loading === true ? (
+        <span>Loading...</span>
+      ) : (
+        <WeatherInfo city={city} weather={weather} />
+      )}
     </>
   );
 }
