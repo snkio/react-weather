@@ -2,7 +2,7 @@ import { searchCities } from "./utils/weather";
 import { getWeather } from "./utils/weather";
 import { useState, useEffect } from "react";
 import WeatherSearch from "./components/WeatherSearch/WeatherSearch";
-import WeatherInfo from "./components/WeatherInfo/WeatherInfo";
+import CurrentWeather from "./components/CurrentWeather/CurrentWeather";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,7 @@ function App() {
       {loading === true ? (
         <span>Loading...</span>
       ) : (
-        <WeatherInfo city={city} weather={weather} />
+        <CurrentWeather city={city} weather={weather} />
       )}
     </>
   );

@@ -47,7 +47,7 @@ function WeatherSearch({
 
   return (
     <>
-      <div className="w-full px-4 py-4 md:max-w-7xl md:mx-auto">
+      <div className="w-full md:max-w-7xl md:mx-auto px-4 my-5">
         <form>
           <div>
             <div className="bg-bg-block rounded-full p-2 inline-flex items-center gap-1">
@@ -69,7 +69,6 @@ function WeatherSearch({
                 className="outline-none text-text-main bg-transparent"
               />
             </div>
-
             <button onClick={handleEnter}>Search</button>
             <div className="max-h-24 overflow-y-auto">
               {suggestions.map((i) => (
