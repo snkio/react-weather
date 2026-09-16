@@ -1,3 +1,5 @@
+import searchIcon from "../../assets/search.svg";
+
 function WeatherSearch({
   getWeather,
   input,
@@ -48,22 +50,26 @@ function WeatherSearch({
       <div className="w-full px-4 py-4 md:max-w-7xl md:mx-auto">
         <form>
           <div>
-            <input
-              type="text"
-              placeholder="Enter location"
-              value={input}
-              onChange={async (e) => {
-                const value = e.target.value;
-                setInput(value);
-                if (value.length > 2) {
-                  const citiesList = await searchCities(value);
-                  setSuggestions(citiesList || []);
-                } else {
-                  setSuggestions([]);
-                }
-              }}
-              className="border outline-none rounded-full px-4 py-1"
-            />
+            <div className="bg-bg-block rounded-full p-2 inline-flex items-center gap-1">
+              <img src={searchIcon} alt="" aria-hidden="true" />
+              <input
+                type="text"
+                placeholder="Search"
+                value={input}
+                onChange={async (e) => {
+                  const value = e.target.value;
+                  setInput(value);
+                  if (value.length > 2) {
+                    const citiesList = await searchCities(value);
+                    setSuggestions(citiesList || []);
+                  } else {
+                    setSuggestions([]);
+                  }
+                }}
+                className="outline-none text-text-main bg-transparent"
+              />
+            </div>
+
             <button onClick={handleEnter}>Search</button>
             <div className="max-h-24 overflow-y-auto">
               {suggestions.map((i) => (

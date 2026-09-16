@@ -8,6 +8,7 @@ function WeatherInfo({ city, weather }) {
         {city && (
           <div className="flex items-center gap-2">
             <p>{weather?.now?.type?.text}</p>
+            <img src={weather?.now?.type?.icon} alt="img" />
             <span className="text-red-800">
               {weather?.daily?.temperatureMax}&deg;
             </span>
@@ -18,11 +19,12 @@ function WeatherInfo({ city, weather }) {
           </div>
         )}
 
+        {city && <p>Surface Pleasure {weather?.now?.surfaceP} hPa</p>}
         {city && <p>Sunrise {weather?.daily?.sunrise?.hour}</p>}
         {city && <p>Sunset {weather?.daily?.sunset?.hour}</p>}
         {city && <p>Real Feel {weather?.now?.realfeel}</p>}
         {city && <p>Humadity {weather?.now?.humadity}</p>}
-        {city && <p>Wind Speed {weather?.now?.windSpeed}</p>}
+        {city && <p>Wind Speed {weather?.now?.windSpeed} km/h</p>}
         {city && <p>Wind Direction {weather?.now?.windDirection}&deg;</p>}
       </div>
     </>

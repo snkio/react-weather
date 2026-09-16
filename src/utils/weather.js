@@ -1,7 +1,7 @@
 const weatherCodes = {
   0: {
     text: "Clear",
-    icon: "none",
+    icon: "/assets/partlysun.svg",
   },
   1: {
     text: "Mainly Clear",
@@ -9,51 +9,51 @@ const weatherCodes = {
   },
   2: {
     text: "Partly Cloudy",
-    icon: "none",
+    icon: "/weather-icons/cloud.svg",
   },
   3: {
     text: "Overcast",
-    icon: "none",
+    icon: "/weather-icons/cloud.svg",
   },
   45: {
     text: "Fog",
-    icon: "none",
+    icon: "/weather-icons/cloud.svg",
   },
   48: {
     text: "Fog",
-    icon: "none",
+    icon: "/weather-icons/cloud.svg",
   },
   51: {
     text: "Light Drizzle",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   53: {
     text: "Drizzle",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   55: {
     text: "Drizzle",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   56: {
     text: "Drizzle",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   57: {
-    text: "Heavy freezing Rain",
+    text: "Heavy Freezing Rain",
     icon: "none",
   },
   61: {
     text: "Light Rain",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   63: {
     text: "Rain",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   65: {
     text: "Heavy Rain",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   66: {
     text: "Freezing Rain",
@@ -81,11 +81,11 @@ const weatherCodes = {
   },
   80: {
     text: "Light Showers",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   81: {
     text: "Showers",
-    icon: "none",
+    icon: "/weather-icons/rain.svg",
   },
   82: {
     text: "Heavy Downpour",
@@ -169,7 +169,7 @@ export async function getWeather(cityName) {
     const { latitude, longitude } = firstCity;
 
     const getWeatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature&timezone=auto`,
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature,surface_pressure&timezone=auto`,
     );
 
     function toWeather(weather) {
@@ -195,6 +195,7 @@ export async function getWeather(cityName) {
     const humidityNow = weatherNow?.relative_humidity_2m;
     const windSpeedNow = weatherNow?.wind_speed_10m;
     const windDirectionNow = weatherNow?.wind_direction_10m;
+    const surfacePressure = weatherNow?.surface_pressure;
 
     const getCurrentHour = new Date().getHours();
 
@@ -234,6 +235,7 @@ export async function getWeather(cityName) {
         humadity: humidityNow,
         windSpeed: windSpeedNow,
         windDirection: windDirectionNow,
+        surfaceP: Math.round(surfacePressure),
       },
       hour: {
         type: typeHour,
