@@ -3,6 +3,7 @@ import { getWeather } from "./utils/weather";
 import { useState, useEffect } from "react";
 import WeatherSearch from "./components/WeatherSearch/WeatherSearch";
 import CurrentWeather from "./components/CurrentWeather/CurrentWeather";
+import WeatherWidgets from "./components/WeatherWidgets/WeatherWidgets";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -26,7 +27,7 @@ function App() {
   }, []);
 
   return (
-    <>
+    <div className="px-4 w-full md:max-w-7xl md:mx-auto">
       <WeatherSearch
         setLoading={setLoading}
         input={input}
@@ -41,9 +42,12 @@ function App() {
       {loading === true ? (
         <span>Loading...</span>
       ) : (
-        <CurrentWeather city={city} weather={weather} />
+        <>
+          <CurrentWeather city={city} weather={weather} />
+          <WeatherWidgets city={city} weather={weather} />
+        </>
       )}
-    </>
+    </div>
   );
 }
 
