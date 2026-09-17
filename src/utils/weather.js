@@ -245,7 +245,6 @@ export async function getWeather(cityName) {
     const sunset = rawSunset.map((e) => toDate(e));
     const tempMax = rawTempMax.map((e) => Math.round(e));
     const tempMin = rawTempMin.map((e) => Math.round(e));
-    console.log(rawType);
     const typeDaily = rawType.map((wcode) =>
       toWeather({ weather_code: wcode }),
     );

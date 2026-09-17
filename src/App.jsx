@@ -11,9 +11,7 @@ function App() {
   const [city, setCity] = useState(() => {
     return localStorage.getItem("city") || "New York";
   });
-  const [input, setInput] = useState("");
   const [weather, setWeather] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
     async function getData() {
@@ -31,17 +29,15 @@ function App() {
     <div className="px-4 w-full md:max-w-7xl md:mx-auto">
       <WeatherSearch
         setLoading={setLoading}
-        input={input}
-        setInput={setInput}
         setWeather={setWeather}
         setCity={setCity}
-        setSuggestions={setSuggestions}
         getWeather={getWeather}
         searchCities={searchCities}
-        suggestions={suggestions}
       />
       {loading === true ? (
-        <span>Loading...</span>
+        <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50">
+          <span className="absolute w-6 h-6 border-2 border-accent/20 border-t-accent rounded-full animate-spin"></span>
+        </div>
       ) : (
         <>
           <CurrentWeather city={city} weather={weather} />
