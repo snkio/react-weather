@@ -62,7 +62,7 @@ function WeatherSearch({
       <div className="my-5">
         <div className="inline-flex flex-col">
           <button
-            className="bg-bg-block rounded-full p-2 flex items-center gap-1 min-w-[200px]"
+            className="bg-bg-block rounded-full p-2 flex items-center gap-1 min-w-50"
             onClick={() => setOpen(true)}
           >
             <img src={searchIcon} alt="" aria-hidden="true" />
@@ -70,7 +70,7 @@ function WeatherSearch({
           </button>
           {open && (
             <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-              <div className="absolute">
+              <div className="absolute z-50">
                 <div className="relative bg-bg-block flex items-center p-2 gap-1 rounded-full">
                   <img src={searchIcon} alt="" aria-hidden="true" />
                   <form
@@ -84,7 +84,7 @@ function WeatherSearch({
                       ref={inputRef}
                       value={input}
                       placeholder="Enter location"
-                      className="outline-none"
+                      className="outline-none max-w-[200px]"
                       onChange={async (city) => {
                         const value = city.target.value;
                         setInput(value);
@@ -97,8 +97,25 @@ function WeatherSearch({
                       }}
                     />
                   </form>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={24}
+                    height={24}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#ffffff"
+                    strokeWidth={2}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="cursor-pointer transition-all duration-300 md:opacity-50 md:hover:rotate-90 md:hover:opacity-100"
+                    onClick={() => setOpen(false)}
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M18 6l-12 12" />
+                    <path d="M6 6l12 12" />
+                  </svg>
                 </div>
-                <div className="absolute w-full bg-bg-block scrollbar-thin scrollbar-thumb-yellow-100 top-[calc(100%+10px)] rounded-2xl overflow-y-auto max-h-50">
+                <div className="absolute w-full bg-bg-block scrollbar-thin scrollbar-thumb-yellow-100 top-[calc(100%+10px)] rounded-2xl overflow-y-auto max-h-50 md:max-h-auto">
                   {suggestions.map((i) => (
                     <div
                       key={i.id}
@@ -106,7 +123,7 @@ function WeatherSearch({
                         handleSearchClick(i);
                         setOpen(false);
                       }}
-                      className="p-2 cursor-pointer rounded-2xl overflow-y-auto"
+                      className="p-2 cursor-pointer rounded-2xl overflow-y-auto px-2 transition-colors duration-300 hover:bg-bg-main/50"
                     >
                       {i.name}, <span>{i.country}</span>
                     </div>
