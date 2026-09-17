@@ -48,8 +48,8 @@ function WeatherSearch({
   return (
     <>
       <div className="my-5">
-        <form>
-          <div>
+        <form onSubmit={handleEnter}>
+          <div className="relative inline-flex flex-col">
             <div className="bg-bg-block rounded-full p-2 inline-flex items-center gap-1">
               <img src={searchIcon} alt="" aria-hidden="true" />
               <input
@@ -69,8 +69,7 @@ function WeatherSearch({
                 className="outline-none text-text-main bg-transparent"
               />
             </div>
-            <button onClick={handleEnter}>Search</button>
-            <div className="flex-inline max-h-24 overflow-y-auto">
+            <div className="absolute w-full bg-bg-block flex-inline max-h-24 overflow-y-auto scrollbar-thin scrollbar-thumb-yellow-100 top-full">
               {suggestions.map((i) => (
                 <div
                   key={i.id}

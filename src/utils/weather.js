@@ -1,11 +1,11 @@
 const weatherCodes = {
   0: {
     text: "Clear",
-    icon: "/assets/partlysun.svg",
+    icon: "/weather-icons/sun.svg",
   },
   1: {
-    text: "Mainly Clear",
-    icon: "none",
+    text: "Clear",
+    icon: "/weather-icons/sun.svg",
   },
   2: {
     text: "Partly Cloudy",
@@ -123,18 +123,28 @@ export function toDate(e) {
     getDate = new Date();
   }
 
+  let day = getDate.toLocaleString(undefined, {
+    weekday: "short",
+  });
   const dateText = getDate.toLocaleDateString(undefined, {
-    year: "numeric",
-    month: "long",
+    month: "short",
     day: "numeric",
   });
   const timeText = getDate.toLocaleTimeString(undefined, {
     hour: "2-digit",
     minute: "2-digit",
   });
+
+  if (getDate.toDateString() === new Date().toDateString()) {
+    day = "Today";
+  }
+
+  const result = timeText.startsWith("0") ? timeText.slice(1) : timeText;
+
   return {
+    day: day,
     text: dateText,
-    hour: timeText,
+    hour: result,
   };
 }
 
@@ -169,7 +179,7 @@ export async function getWeather(cityName) {
     const { latitude, longitude } = firstCity;
 
     const getWeatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature,surface_pressure&timezone=auto`,
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max&hourly=temperature_2m,weather_code,wind_speed_10m&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature,surface_pressure&timezone=auto`,
     );
 
     function toWeather(weather) {
@@ -188,18 +198,33 @@ export async function getWeather(cityName) {
     const weatherHour = weatherData.hourly;
     const weatherDaily = weatherData.daily;
 
-    console.log(weatherData);
+    const {
+      temperature_2m: tempNow,
+      apparent_temperature: feelingsNow,
+      relative_humidity_2m: humidityNow,
+      wind_speed_10m: windSpeedNow,
+      wind_direction_10m: windDirectionNow,
+      surface_pressure: surfacePressure,
+    } = weatherNow ?? {};
 
-    const tempNow = weatherNow?.temperature_2m;
-    const feelingsNow = weatherNow?.apparent_temperature;
-    const humidityNow = weatherNow?.relative_humidity_2m;
-    const windSpeedNow = weatherNow?.wind_speed_10m;
-    const windDirectionNow = weatherNow?.wind_direction_10m;
-    const surfacePressure = weatherNow?.surface_pressure;
+    const {
+      time: rawTime,
+      temperature_2m: rawHour,
+      weather_code: rawCode,
+    } = weatherHour ?? {};
+
+    const {
+      weather_code: rawType,
+      sunrise: rawSunrise,
+      sunset: rawSunset,
+      precipitation_probability_max: perRain,
+      temperature_2m_max: rawTempMax,
+      temperature_2m_min: rawTempMin,
+    } = weatherDaily ?? {};
 
     const getCurrentHour = new Date().getHours();
 
-    const timeHour = weatherHour.time
+    const timeHour = rawTime
       .filter((e) => {
         const now = new Date();
         const getWeatherTime = new Date(e);
@@ -210,21 +235,20 @@ export async function getWeather(cityName) {
       })
       .slice(0, 24)
       .map((e) => toDate(e));
-    const tempHour = weatherHour.temperature_2m.slice(
-      getCurrentHour,
-      getCurrentHour + 24,
-    );
+    const tempHour = rawHour.slice(getCurrentHour, getCurrentHour + 24);
     const typeHour =
-      weatherHour?.weather_code
-        ?.slice(getCurrentHour, getCurrentHour + 24)
-        ?.map((wcode) => {
-          return toWeather({ weather_code: wcode });
-        }) || [];
+      rawCode.slice(getCurrentHour, getCurrentHour + 24)?.map((wcode) => {
+        return toWeather({ weather_code: wcode });
+      }) || [];
 
-    const sunrise = weatherDaily?.sunrise;
-    const sunset = weatherDaily?.sunset;
-    const tempDailyMax = weatherDaily?.temperature_2m_max;
-    const tempDailyMin = weatherDaily?.temperature_2m_min;
+    const sunrise = rawSunrise.map((e) => toDate(e));
+    const sunset = rawSunset.map((e) => toDate(e));
+    const tempMax = rawTempMax.map((e) => Math.round(e));
+    const tempMin = rawTempMin.map((e) => Math.round(e));
+    console.log(rawType);
+    const typeDaily = rawType.map((wcode) =>
+      toWeather({ weather_code: wcode }),
+    );
 
     return {
       now: {
@@ -243,10 +267,12 @@ export async function getWeather(cityName) {
         temperature: tempHour.map((e) => Math.round(e)),
       },
       daily: {
-        sunrise: toDate(sunrise[0]),
-        sunset: toDate(sunset[0]),
-        temperatureMax: Math.round(tempDailyMax[0]),
-        temperatureMin: Math.round(tempDailyMin[0]),
+        type: typeDaily,
+        sunrise: sunrise,
+        sunset: sunset,
+        temperatureMax: tempMax,
+        temperatureMin: tempMin,
+        perrain: perRain,
       },
     };
   } catch (err) {
