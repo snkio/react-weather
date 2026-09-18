@@ -5,6 +5,7 @@ import WeatherSearch from "./components/WeatherSearch/WeatherSearch";
 import CurrentWeather from "./components/CurrentWeather/CurrentWeather";
 import WeatherWidgets from "./components/WeatherWidgets/WeatherWidgets";
 import DailyWeather from "./components/DailyWeather/DailyWeather";
+import HourWeather from "./components/HourWeather.jsx/HourWeather";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -42,6 +43,7 @@ function App() {
         <>
           <CurrentWeather city={city} weather={weather} />
           <DailyWeather city={city} weather={weather} />
+          <HourWeather city={city} weather={weather} />
           <WeatherWidgets city={city} weather={weather} />
         </>
       )}

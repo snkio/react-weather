@@ -2,10 +2,12 @@ const weatherCodes = {
   0: {
     text: "Clear",
     icon: "/weather-icons/sun.svg",
+    iconNight: "/weather-icons/night.svg",
   },
   1: {
     text: "Clear",
     icon: "/weather-icons/sun.svg",
+    iconNight: "/weather-icons/night.svg",
   },
   2: {
     text: "Partly Cloudy",
@@ -130,7 +132,7 @@ export function toDate(e) {
     month: "short",
     day: "numeric",
   });
-  const timeText = getDate.toLocaleTimeString(undefined, {
+  let timeText = getDate.toLocaleTimeString(undefined, {
     hour: "2-digit",
     minute: "2-digit",
   });

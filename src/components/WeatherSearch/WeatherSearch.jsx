@@ -84,7 +84,7 @@ function WeatherSearch({
                       ref={inputRef}
                       value={input}
                       placeholder="Enter location"
-                      className="outline-none max-w-[200px]"
+                      className="outline-none max-w-50"
                       onChange={async (city) => {
                         const value = city.target.value;
                         setInput(value);
