@@ -15,7 +15,11 @@ function WeatherInfo({ city, weather }) {
               </div>
             </div>
             <img
-              src={weather?.now?.type?.icon}
+              src={
+                weather?.now?.day
+                  ? weather?.now?.type?.icon
+                  : weather?.now?.type?.iconNight || weather?.now?.type?.icon
+              }
               alt=""
               aria-hidden="true"
               className="w-full max-w-25"
