@@ -11,7 +11,8 @@ const weatherCodes = {
   },
   2: {
     text: "Partly Cloudy",
-    icon: "/weather-icons/cloud.svg",
+    icon: "/weather-icons/partlysun.svg",
+    iconNight: "/weather-icons/partlynight.svg",
   },
   3: {
     text: "Overcast",
