@@ -262,7 +262,7 @@ export async function getWeather(cityName) {
         type: toWeather(weatherNow),
         temperature: Math.round(tempNow),
         realfeel: Math.round(feelingsNow),
-        humadity: humidityNow,
+        humidity: humidityNow,
         windSpeed: windSpeedNow,
         windDirection: windDirectionNow,
         surfaceP: Math.round(surfacePressure),

@@ -1,5 +1,5 @@
 import sunIcon from "/weather-icons/sun.svg";
-import humadityIcon from "/weather-icons/humadity.svg";
+import humidityIcon from "/weather-icons/humidity.svg";
 import temperatureIcon from "/weather-icons/temp.svg";
 import windIcon from "/weather-icons/wind.svg";
 
@@ -20,10 +20,10 @@ function WeatherWidgets({ city, weather }) {
           </div>
           <div className="w-full bg-bg-block/20 rounded-2xl p-4 min-h-40">
             <div className="flex items-center gap-1">
-              <img src={humadityIcon} alt="" aria-hidden="true" />
-              <p className="text-sm uppercase tracking-wide">Humadity</p>
+              <img src={humidityIcon} alt="" aria-hidden="true" />
+              <p className="text-sm uppercase tracking-wide">Humidity</p>
             </div>
-            <h3 className="text-3xl font-bold">{weather?.now?.humadity}%</h3>
+            <h3 className="text-3xl font-bold">{weather?.now?.humidity}%</h3>
           </div>
           <div className="w-full bg-bg-block/20 rounded-2xl p-4 min-h-40">
             <div className="flex items-center gap-1">

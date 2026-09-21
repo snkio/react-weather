@@ -62,7 +62,7 @@ function WeatherSearch({
       <div className="my-5">
         <div className="inline-flex flex-col">
           <button
-            className="bg-bg-block rounded-full p-2 flex items-center gap-1 min-w-50"
+            className="bg-bg-block rounded-full p-2 flex items-center gap-1 min-w-50 duration-300 transition-colors hover:bg-bg-block/80 cursor-pointer"
             onClick={() => setOpen(true)}
           >
             <img src={searchIcon} alt="" aria-hidden="true" />
