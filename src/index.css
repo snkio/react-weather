@@ -3,5 +3,10 @@
 @import "tailwindcss";
 
 @theme {
+  --color-bg-main: #232322;
+  --color-bg-block: #323230;
+  --color-text-main: #c5c6bd;
+  --color-text-accent: #fff;
+  --color-accent: #7953d3;
   --font-inter: "Inter", sans-serif;
 }
