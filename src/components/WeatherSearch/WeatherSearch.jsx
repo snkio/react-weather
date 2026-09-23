@@ -57,6 +57,21 @@ function WeatherSearch({
     setLoading(false);
   }
 
+  useEffect(() => {
+    let timer;
+
+    if (input.length <= 2) return;
+
+    timer = setTimeout(async () => {
+      const citiesList = await searchCities(input);
+      setSuggestions(citiesList || []);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [input, searchCities]);
+
+  const visibleSuggestions = input.length <= 2 ? [] : suggestions;
+
   return (
     <>
       <div className="my-5">
@@ -85,16 +100,7 @@ function WeatherSearch({
                       value={input}
                       placeholder="Enter location"
                       className="outline-none max-w-50"
-                      onChange={async (city) => {
-                        const value = city.target.value;
-                        setInput(value);
-                        if (value.length > 2) {
-                          const citiesList = await searchCities(value);
-                          setSuggestions(citiesList || []);
-                        } else {
-                          setSuggestions([]);
-                        }
-                      }}
+                      onChange={(city) => setInput(city.target.value)}
                     />
                   </form>
                   <svg
@@ -116,7 +122,7 @@ function WeatherSearch({
                   </svg>
                 </div>
                 <div className="absolute w-full bg-bg-block scrollbar-thin scrollbar-thumb-yellow-100 top-[calc(100%+10px)] rounded-2xl overflow-y-auto max-h-50 md:max-h-auto">
-                  {suggestions.map((i) => (
+                  {visibleSuggestions.map((i) => (
                     <div
                       key={i.id}
                       onClick={() => {
