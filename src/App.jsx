@@ -20,8 +20,7 @@ function App() {
   useEffect(() => {
     async function getData() {
       setLoading(true);
-      const unitTemp = unit === "°C" ? "celsius" : "fahrenheit";
-      const result = await getWeather(city, unitTemp);
+      const result = await getWeather(city, unit);
       setWeather(result);
       setLoading(false);
     }

@@ -50,7 +50,6 @@ function WeatherSearch({
 
   async function handleSearch(cityName) {
     setLoading(true);
-
     const data = await getWeather(cityName);
 
     if (!data) {
@@ -148,7 +147,7 @@ function WeatherSearch({
           )}
           <button
             onClick={toggleUnit}
-            className="flex items-center justify-center ml-auto bg-bg-block rounded-full max-w-12.5 w-full p-2"
+            className="flex items-center justify-center ml-auto bg-bg-block rounded-full max-w-12.5 w-full p-2 duration-300 transition-colors hover:bg-bg-block/80 cursor-pointer"
           >
             {unit}
           </button>
