@@ -13,18 +13,20 @@ function App() {
     return localStorage.getItem("city") || "New York";
   });
   const [weather, setWeather] = useState(null);
+  const [unit, setUnit] = useState(() => {
+    return localStorage.getItem("unit") || "°C";
+  });
 
   useEffect(() => {
     async function getData() {
       setLoading(true);
-      const startCity = localStorage.getItem("city") || "New York";
-      const result = await getWeather(startCity);
+      const unitTemp = unit === "°C" ? "celsius" : "fahrenheit";
+      const result = await getWeather(city, unitTemp);
       setWeather(result);
       setLoading(false);
     }
-
     getData();
-  }, []);
+  }, [unit, city]);
 
   return (
     <div className="px-4 w-full md:max-w-7xl md:mx-auto">
@@ -34,6 +36,8 @@ function App() {
         setCity={setCity}
         getWeather={getWeather}
         searchCities={searchCities}
+        setUnit={setUnit}
+        unit={unit}
       />
       {loading === true ? (
         <div className="fixed inset-0 flex justify-center items-center bg-black/50 z-50">
@@ -41,10 +45,10 @@ function App() {
         </div>
       ) : (
         <>
-          <CurrentWeather city={city} weather={weather} />
-          <DailyWeather city={city} weather={weather} />
-          <HourWeather city={city} weather={weather} />
-          <WeatherWidgets city={city} weather={weather} />
+          <CurrentWeather city={city} weather={weather} unit={unit} />
+          <DailyWeather city={city} weather={weather} unit={unit} />
+          <HourWeather city={city} weather={weather} unit={unit} />
+          <WeatherWidgets city={city} weather={weather} unit={unit} />
         </>
       )}
     </div>

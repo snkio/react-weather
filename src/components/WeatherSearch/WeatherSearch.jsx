@@ -7,6 +7,8 @@ function WeatherSearch({
   setLoading,
   setWeather,
   searchCities,
+  setUnit,
+  unit,
 }) {
   const [open, setOpen] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
@@ -22,6 +24,12 @@ function WeatherSearch({
       document.body.style.overflow = "";
     }
   }, [open]);
+
+  function toggleUnit() {
+    const checkUnit = unit === "°C" ? "°F" : "°C";
+    setUnit(checkUnit);
+    localStorage.setItem("unit", checkUnit);
+  }
 
   async function handleEnter(e) {
     e.preventDefault();
@@ -75,7 +83,7 @@ function WeatherSearch({
   return (
     <>
       <div className="my-5">
-        <div className="inline-flex flex-col">
+        <div className="flex">
           <button
             className="bg-bg-block rounded-full p-2 flex items-center gap-1 min-w-50 duration-300 transition-colors hover:bg-bg-block/80 cursor-pointer"
             onClick={() => setOpen(true)}
@@ -138,6 +146,12 @@ function WeatherSearch({
               </div>
             </div>
           )}
+          <button
+            onClick={toggleUnit}
+            className="flex items-center justify-center ml-auto bg-bg-block rounded-full max-w-12.5 w-full p-2"
+          >
+            {unit}
+          </button>
         </div>
       </div>
     </>
