@@ -206,8 +206,6 @@ export async function getWeather(cityName, unit) {
     const weatherHour = weatherData.hourly;
     const weatherDaily = weatherData.daily;
 
-    console.log(weatherData);
-
     const {
       is_day: isDay,
       temperature_2m: tempNow,
