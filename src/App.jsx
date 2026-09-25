@@ -35,8 +35,6 @@ function App() {
     getData();
   }, [unit, city]);
 
-  console.log(error);
-
   return (
     <div className="px-4 w-full md:max-w-7xl md:mx-auto">
       {city && error ? (

@@ -185,7 +185,7 @@ export async function getWeather(cityName, unit) {
 
     const getUnit = unit;
     const unitTemp = getUnit === "°C" ? "celsius" : "fahrenheit";
-    const unitWind = getUnit === "celsius" ? "kmh" : "mph";
+    const unitWind = unitTemp === "celsius" ? "kmh" : "mph";
 
     const getWeatherResponse = await fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max&hourly=temperature_2m,weather_code,wind_speed_10m&current=is_day,temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature,surface_pressure&timezone=auto&wind_speed_unit=${unitWind}&temperature_unit=${unitTemp}`,
