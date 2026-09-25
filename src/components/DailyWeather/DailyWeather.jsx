@@ -12,12 +12,10 @@ function DailyWeather({ city, weather }) {
                   alt="weather"
                   aria-hidden="true"
                 />
-                <p className="">{weather.daily.perrain[i]}%</p>
-                <div className="text-sm">
-                  <p>
-                    {weather.daily.temperatureMax[i]}&deg; /{" "}
-                    {weather.daily.temperatureMin[i]}&deg;
-                  </p>
+                <p>{weather.daily.perrain[i]}%</p>
+                <div className="flex text-sm gap-2">
+                  <span>{weather.daily.temperatureMax[i]}&deg;</span>
+                  <span>{weather.daily.temperatureMin[i]}&deg;</span>
                 </div>
               </div>
             ))}

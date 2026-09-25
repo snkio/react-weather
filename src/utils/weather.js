@@ -170,7 +170,7 @@ export async function searchCities(cityName) {
   }
 }
 
-export async function getWeather(cityName) {
+export async function getWeather(cityName, unit) {
   if (!cityName) return;
 
   try {
@@ -183,8 +183,12 @@ export async function getWeather(cityName) {
 
     const { latitude, longitude } = firstCity;
 
+    const getUnit = unit;
+    const unitTemp = getUnit === "°C" ? "celsius" : "fahrenheit";
+    const unitWind = getUnit === "celsius" ? "kmh" : "mph";
+
     const getWeatherResponse = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max&hourly=temperature_2m,weather_code,wind_speed_10m&current=is_day,temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature,surface_pressure&timezone=auto`,
+      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,precipitation_probability_max&hourly=temperature_2m,weather_code,wind_speed_10m&current=is_day,temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m,wind_direction_10m,apparent_temperature,surface_pressure&timezone=auto&wind_speed_unit=${unitWind}&temperature_unit=${unitTemp}`,
     );
 
     function toWeather(weather) {
@@ -198,10 +202,11 @@ export async function getWeather(cityName) {
     }
 
     const weatherData = await getWeatherResponse.json();
-
     const weatherNow = weatherData.current;
     const weatherHour = weatherData.hourly;
     const weatherDaily = weatherData.daily;
+
+    console.log(weatherData);
 
     const {
       is_day: isDay,

@@ -3,7 +3,7 @@ import humidityIcon from "/weather-icons/humidity.svg";
 import temperatureIcon from "/weather-icons/temp.svg";
 import windIcon from "/weather-icons/wind.svg";
 
-function WeatherWidgets({ city, weather }) {
+function WeatherWidgets({ city, weather, unit }) {
   return (
     <>
       {city && (
@@ -42,7 +42,9 @@ function WeatherWidgets({ city, weather }) {
             <div className="relative w-25 h-25 border flex items-center justify-center rounded-full p-6">
               <div className="absolute flex flex-col items-center justify-center top-1/2 -translate-y-1/2 z-20 w-12 h-12 bg-white text-slate-900 rounded-full">
                 <p className="font-bold text-sm">{weather?.now?.windSpeed}</p>
-                <span className="text-xs">km/h</span>
+                <span className="text-xs">
+                  {unit === "°C" ? "km/h" : "mp/h"}
+                </span>
               </div>
               <span className="absolute top-0">N</span>
               <span className="absolute bottom-0">S</span>

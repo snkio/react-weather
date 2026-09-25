@@ -1,5 +1,4 @@
 function WeatherInfo({ city, weather }) {
-  console.log(weather);
   return (
     <>
       <div>
@@ -10,8 +9,8 @@ function WeatherInfo({ city, weather }) {
               <h2 className="text-4xl">{weather?.now?.temperature}&deg;</h2>
               <p className="text-sm font-bold">{weather?.now?.type?.text}</p>
               <div className="flex gap-2">
-                <span>H: {weather?.daily?.temperatureMax[0]}</span>
-                <span>L: {weather?.daily?.temperatureMin[0]}</span>
+                <span>H: {weather?.daily?.temperatureMax[0]}&deg;</span>
+                <span>L: {weather?.daily?.temperatureMin[0]}&deg;</span>
               </div>
             </div>
             <img
