@@ -43,8 +43,8 @@ export const weatherCodes = {
     icon: "/weather-icons/rain.svg",
   },
   57: {
-    text: "Heavy Freezing Rain",
-    icon: "none",
+    text: "Freezing Drizzle",
+    icon: "/weather-icons/rain.svg",
   },
   61: {
     text: "Light Rain",
@@ -68,19 +68,19 @@ export const weatherCodes = {
   },
   71: {
     text: "Light Snow",
-    icon: "none",
+    icon: "/weather-icons/snow.svg",
   },
   73: {
     text: "Snow",
-    icon: "none",
+    icon: "/weather-icons/snow.svg",
   },
   75: {
     text: "Heavy Snow",
-    icon: "none",
+    icon: "/weather-icons/snow.svg",
   },
   77: {
     text: "Snow Grains",
-    icon: "none",
+    icon: "/weather-icons/snow.svg",
   },
   80: {
     text: "Light Showers",
@@ -96,22 +96,22 @@ export const weatherCodes = {
   },
   85: {
     text: "Light Snow Showers",
-    icon: "none",
+    icon: "/weather-icons/snow.svg",
   },
   86: {
     text: "Snow Showers",
-    icon: "none",
+    icon: "/weather-icons/snow.svg",
   },
   95: {
     text: "Thunderstorm",
-    icon: "none",
+    icon: "/weather-icons/storm.svg",
   },
   96: {
     text: "Hail Storm",
-    icon: "none",
+    icon: "/weather-icons/storm.svg",
   },
   99: {
     text: "Heavy Hail Storm",
-    icon: "none",
+    icon: "/weather-icons/storm.svg",
   },
 };
