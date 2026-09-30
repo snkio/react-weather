@@ -1,5 +1,5 @@
-import { searchCities } from "./utils/weather";
-import { getWeather } from "./utils/weather";
+import { searchCities } from "./features/weather/weatherService.js";
+import { getWeather } from "./features/weather/weatherService.js";
 import { useState, useEffect } from "react";
 import WeatherSearch from "./components/WeatherSearch/WeatherSearch";
 import CurrentWeather from "./components/CurrentWeather/CurrentWeather";
