@@ -1,20 +1,41 @@
 import { useState, useRef, useEffect } from "react";
 
 function HourWeather({ weather }) {
+  const [firstVisible, setFirstVisible] = useState(false);
+  const [lastVisible, setLastVisible] = useState(false);
   const scrollRef = useRef(null);
-  const [valueScroll, setValueScroll] = useState(0);
-  const [widthScroll, setWidthScroll] = useState(null);
-
-  useEffect(() => {
-    setWidthScroll(scrollRef.current.clientWidth);
-  }, []);
+  const firstElem = useRef(null);
+  const lastElem = useRef(null);
+  const weatherLength = weather?.hour?.time?.length;
 
   function handleScroll() {
     if (scrollRef.current) {
-      const scroll = scrollRef.current.scrollLeft;
-      return setValueScroll(scroll);
+      return scrollRef.current.scrollLeft;
     }
   }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target === firstElem.current) {
+            setFirstVisible(entry.isIntersecting);
+          }
+          if (entry.target === lastElem.current) {
+            setLastVisible(entry.isIntersecting);
+          }
+        });
+      },
+      { threshold: 0.9 },
+    );
+
+    if (firstElem.current) {
+      observer.observe(firstElem.current);
+    }
+    if (lastElem.current) {
+      observer.observe(lastElem.current);
+    }
+  });
 
   return (
     <section className="bg-bg-block/20 mb-2.5 rounded-2xl p-4">
@@ -25,7 +46,7 @@ function HourWeather({ weather }) {
           className="flex items-center gap-4 overflow-x-auto scrollbar-none"
         >
           <div
-            className={`absolute left-0 hidden ${valueScroll === 0 ? "md:hidden" : "md:block"}`}
+            className={`absolute left-0 ${firstVisible ? "md:hidden" : "md:block"}`}
             onClick={() =>
               scrollRef.current.scrollBy({ left: -200, behavior: "smooth" })
             }
@@ -33,7 +54,7 @@ function HourWeather({ weather }) {
             <div className="relative z-10 flex items-center justify-center bg-white rounded-full w-10 h-10 cursor-pointer after:absolute after:content-[''] after:w-4 after:h-4 after:border-t-2 after:border-l-2 after:border-bg-block after:z-10 after:-rotate-45 after:ml-1"></div>
           </div>
           <div
-            className={`absolute right-0 ${widthScroll >= valueScroll ? "md:block" : "md:hidden"}`}
+            className={`absolute right-0 ${lastVisible ? "md:hidden" : "md:block"}`}
             onClick={() =>
               scrollRef.current.scrollBy({ left: 200, behavior: "smooth" })
             }
@@ -41,6 +62,9 @@ function HourWeather({ weather }) {
             <div className="relative z-10 flex items-center justify-center bg-white rounded-full w-10 h-10 cursor-pointer after:absolute after:content-[''] after:w-4 after:h-4 after:border-t-2 after:border-r-2 after:border-bg-block after:z-10 after:rotate-45 after:mr-1"></div>
           </div>
           {weather?.hour?.time?.map((item, i) => {
+            const first = i === 0;
+            const last = i === weatherLength - 1;
+
             const isDay =
               weather.hour.time[i].time >= weather.daily.sunrise[0].time &&
               weather.hour.time[i].time < weather.daily.sunset[0].time;
@@ -48,6 +72,7 @@ function HourWeather({ weather }) {
             return (
               <div
                 key={i}
+                ref={first ? firstElem : last ? lastElem : null}
                 className="flex flex-col justify-center items-center text-center min-w-20 gap-1.5"
               >
                 <p className="font-bold">{weather.hour.temperature[i]}&deg;</p>
