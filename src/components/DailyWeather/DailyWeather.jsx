@@ -10,6 +10,7 @@ function DailyWeather({ weather }) {
                 src={weather.daily.type[i].icon}
                 alt="weather"
                 aria-hidden="true"
+                className="w-8"
               />
               <p>{weather.daily.perrain[i]}%</p>
               <div className="flex text-sm gap-2">
