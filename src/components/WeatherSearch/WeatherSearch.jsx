@@ -91,8 +91,8 @@ function WeatherSearch({
             <p className="text-text-main">Search</p>
           </button>
           {open && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-              <div className="absolute z-50">
+            <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-100">
+              <div className="absolute">
                 <div className="relative bg-bg-block flex items-center p-2 gap-1 rounded-full">
                   <img src={searchIcon} alt="" aria-hidden="true" />
                   <form
@@ -128,7 +128,7 @@ function WeatherSearch({
                     <path d="M6 6l12 12" />
                   </svg>
                 </div>
-                <div className="absolute w-full bg-bg-block scrollbar-thin scrollbar-thumb-yellow-100 top-[calc(100%+10px)] rounded-2xl overflow-y-auto max-h-50 md:max-h-auto">
+                <div className="absolute w-full bg-bg-block scrollbar-thumb-transparent top-[calc(100%+10px)] rounded-2xl overflow-y-auto max-h-50 md:max-h-auto">
                   {visibleSuggestions.map((i) => (
                     <div
                       key={i.id}
