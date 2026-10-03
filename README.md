@@ -1,7 +1,7 @@
 # React Weather
 
 <p align="center">
-  <img width="100%" alt="Live preview" src="https://github.com/user-attachments/assets/a096e244-8758-4283-b7ee-abf5c4e8cd79" />
+  <img width="100%" alt="Live Preview" src="https://github.com/user-attachments/assets/d3ed227a-4997-4521-9809-b1e7a79cca79" />
 </p>
 
 <p align="center">
