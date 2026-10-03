@@ -46,6 +46,7 @@ export async function getWeather(cityName, unit) {
 
     const {
       is_day: isDay,
+      time: timeNow,
       temperature_2m: tempNow,
       apparent_temperature: feelingsNow,
       relative_humidity_2m: humidityNow,
@@ -69,11 +70,11 @@ export async function getWeather(cityName, unit) {
       temperature_2m_min: rawTempMin,
     } = weatherDaily ?? {};
 
-    const getCurrentHour = new Date().getHours();
+    const getCurrentHour = new Date(timeNow).getHours();
 
     const timeHour = rawTime
       .filter((e) => {
-        const now = new Date();
+        const now = new Date(timeNow);
         const getWeatherTime = new Date(e);
 
         now.setMinutes(0, 0, 0);
