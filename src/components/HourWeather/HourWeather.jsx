@@ -46,7 +46,7 @@ function HourWeather({ weather }) {
           className="flex items-center gap-4 overflow-x-auto scrollbar-none"
         >
           <div
-            className={`absolute left-0 ${firstVisible ? "md:hidden" : "md:block"}`}
+            className={`absolute left-0 hidden ${firstVisible ? "md:hidden" : "md:block"}`}
             onClick={() =>
               scrollRef.current.scrollBy({ left: -200, behavior: "smooth" })
             }
@@ -54,7 +54,7 @@ function HourWeather({ weather }) {
             <div className="relative z-10 flex items-center justify-center bg-white rounded-full w-10 h-10 cursor-pointer after:absolute after:content-[''] after:w-4 after:h-4 after:border-t-2 after:border-l-2 after:border-bg-block after:z-10 after:-rotate-45 after:ml-1"></div>
           </div>
           <div
-            className={`absolute right-0 ${lastVisible ? "md:hidden" : "md:block"}`}
+            className={`absolute right-0 hidden ${lastVisible ? "md:hidden" : "md:block"}`}
             onClick={() =>
               scrollRef.current.scrollBy({ left: 200, behavior: "smooth" })
             }
